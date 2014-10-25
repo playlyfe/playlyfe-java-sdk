@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.6
+version = '0.1.0'
+jar {
+  manifest {
+    attributes 'Implementation-Title': 'Playlyfe Java SDK',
+               'Implementation-Version': version
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.apache.httpcomponents:httpclient:4.3.5'
+  compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
+  compile 'com.google.code.gson:gson:2.3'
+  compile 'com.sparkjava:spark-core:1.1.1'
+}
+
+uploadArchives {
+  repositories {
+    flatDir {
+      dirs 'repos'
+    }
+    mavenDeployer {
+      repository(url: "file://localhost/tmp/myRepo/")
+    }
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId 'com.playlyfe.sdk'
+      artifactId 'playlyfe'
+      version version
+
+      from components.java
+    }
+  }
+}

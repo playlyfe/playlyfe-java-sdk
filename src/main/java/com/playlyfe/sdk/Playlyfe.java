@@ -1,0 +1,224 @@
+package com.playlyfe.sdk;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+public class Playlyfe {
+
+	private String client_id;
+	private String client_secret;
+	private String type;
+	private String redirect_uri;
+	private String code;
+	private PersistAccessToken pac;
+
+	private final String API_ENDPOINT = "api.playlyfe.com/v1";
+
+	private final HttpClient client = HttpClientBuilder.create().build();
+	private final Gson gson = new Gson();
+
+	/* Use this to initialize the Playlyfe sdk in client credentials flow
+	 * @params String client_id Your client id
+	 * @params String client_secret Your client secret
+	 * @params PersistAccessToken pac Your implementation to store and load the access token from a database
+	 */
+    public Playlyfe(String client_id, String client_secret, PersistAccessToken pac) throws ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
+    	this.client_id = client_id;
+    	this.client_secret = client_secret;
+    	this.type = "client";
+    	this.pac = pac;
+    	getAccessToken();
+    }
+
+    /* Use this to initialize the Playlyfe sdk in authorization code flow
+	 * @param String client_id Your client id
+	 * @params String client_secret Your client secret
+	 * @params String redirect_uri The redirect_uri
+	 * @params PersistAccessToken pac Your implementation to store and load the access token from a database
+	 */
+    public Playlyfe(String client_id, String client_secret, String redirect_uri, PersistAccessToken pac) {
+    	this.client_id = client_id;
+    	this.client_secret = client_secret;
+    	this.redirect_uri = redirect_uri;
+    	this.type = "code";
+    	this.pac = pac;
+    }
+
+    public void getAccessToken() throws UnsupportedEncodingException,ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
+   	 	JsonObject json = new JsonObject();
+	    json.addProperty("client_id", client_id);
+	    json.addProperty("client_secret", client_secret);
+    	if(type.equals("client")) {
+    		json.addProperty("grant_type",  "client_credentials");
+    	}
+    	else {
+    		json.addProperty("grant_type",  "authorization_code");
+    		json.addProperty("code",  code);
+    		json.addProperty("redirect_uri", redirect_uri);
+    	}
+		HttpPost post = new HttpPost("https://playlyfe.com/auth/token");
+		StringEntity input = new StringEntity(json.toString());
+		input.setContentType("application/json");
+	    post.setEntity(input);
+		final Map<String, Object> token = (Map<String, Object>) parseJson(client.execute(post));
+		Long expires_at = (((Double) token.get("expires_in")).longValue() + (System.currentTimeMillis()/1000)) * 1000;
+		token.remove("expires_in");
+		token.put("expires_at", expires_at);
+		if(pac == null) {
+			pac = new PersistAccessToken(){
+				@Override
+				public void store(Map<String, Object> token) {
+					System.out.println("Storing Access Token");
+				}
+
+				@Override
+				public Map<String, Object> load() {
+					return token;
+				}
+
+			};
+		}
+		pac.store(token);
+    }
+
+    public Object api(String method, String route, Map<String, String> query, Object body, boolean raw) throws URISyntaxException, IllegalStateException, ClientProtocolException, IOException, PlaylyfeException {
+    	URIBuilder builder = new URIBuilder();
+    	builder.setScheme("https").setHost(API_ENDPOINT).setPath(route);
+    	if (query != null) {
+    		for (Map.Entry<String, String> entry : query.entrySet())
+        	{
+        		builder.setParameter(entry.getKey(), entry.getValue());
+        	}
+    	}
+    	Map<String, Object> token = pac.load();
+    	if(System.currentTimeMillis() >= ((Long) token.get("expires_at"))){
+    		getAccessToken();
+    	}
+    	builder.setParameter("access_token", token.get("access_token").toString());
+
+    	URI uri = builder.build();
+    	HttpRequestBase request;
+    	if(method.equalsIgnoreCase("GET")) {
+    		request = new HttpGet(uri);
+    	}
+    	else if(method.equalsIgnoreCase("POST")) {
+    		request = new HttpPost(uri);
+    		if (body != null) {
+	    		StringEntity input = new StringEntity(gson.toJson(body));
+	    		input.setContentType("application/json");
+	        	((HttpPost)request).setEntity(input);
+    		}
+    	}
+    	else if(method.equalsIgnoreCase("PUT")) {
+    		request = new HttpPut(uri);
+    		if (body != null) {
+	    		StringEntity input = new StringEntity(gson.toJson(body));
+	    		input.setContentType("application/json");
+	        	((HttpPut)request).setEntity(input);
+    		}
+    	}
+    	else if(method.equalsIgnoreCase("PATCH")) {
+    		request = new HttpPatch(uri);
+    		if (body != null) {
+	    		StringEntity input = new StringEntity(gson.toJson(body));
+	    		input.setContentType("application/json");
+	        	((HttpPatch)request).setEntity(input);
+    		}
+    	}
+    	else if(method.equalsIgnoreCase("Delete")) {
+    		request = new HttpDelete(uri);
+    	}
+    	else {
+    		request = new HttpGet(uri);
+    	}
+    	request.addHeader("accept", "application/json");
+    	HttpResponse response = client.execute(request);
+    	if(raw == true){
+    		return readResponse(response);
+    	}
+    	else {
+			return parseJson(response);
+    	}
+    }
+
+    public Object get(String route, Map<String, String> query) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+	    return api("GET", route, query, null, false);
+    }
+    
+    public Object get(String route, Map<String, String> query, boolean raw) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+	    return api("GET", route, query, null, raw);
+    }
+
+    public Object post(String route, Map<String, String> query, Object body) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+    	return api("POST", route, query, body, false);
+    }
+
+    public Object put(String route, Map<String, String> query, Object body) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+    	return api("PUT", route, query, body, false);
+    }
+
+    public Object patch(String route, Map<String, String> query, Object body) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+    	return api("PATCH", route, query, body, false);
+    }
+
+    public Object delete(String route, Map<String, String> query) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+	    return api("DELETE", route, query, null, false);
+    }
+
+    private String readResponse(HttpResponse response) throws IllegalStateException, IOException {
+    	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+		StringBuilder sb = new StringBuilder();
+	    String line = "";
+	    while ((line = rd.readLine()) != null) {
+	       sb.append(line);
+	    }
+	    rd.close();
+	    return sb.toString();
+    }
+
+    private Object parseJson(HttpResponse response) throws IllegalStateException, IOException, PlaylyfeException {
+    	String content = readResponse(response);
+    	if(content.contains("error") && content.contains("error_description")) {
+    		Map<String, String> errors = (Map<String, String>) gson.fromJson(content, Object.class);
+    		throw new PlaylyfeException(errors.get("error"), errors.get("error_description"));
+    	}
+    	else {
+    		return gson.fromJson(content, Object.class);
+    	}
+    }
+
+    public String get_login_url() throws URISyntaxException {
+    	URIBuilder builder = new URIBuilder();
+    	builder.setScheme("https").setHost("playlyfe.com/auth")
+    		.setParameter("response_type", "code")
+    		.setParameter("client_id", client_id)
+    		.setParameter("redirect_uri", redirect_uri);
+		return builder.build().toString();
+	}
+
+	public void exchange_code(String code) throws UnsupportedEncodingException, ClientProtocolException, IllegalStateException, IOException, PlaylyfeException {
+		this.code = code;
+		getAccessToken();
+	}
+}
