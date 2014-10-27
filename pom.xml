@@ -11,8 +11,8 @@
   <inceptionYear>2014</inceptionYear>
   <licenses>
     <license>
-      <name>The Playlyfe License</name>
-      <url>https://github.com/playlyfe/playlyfe-java-sdk</url>
+      <name>The MIT License (MIT)</name>
+      <url>https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -20,7 +20,7 @@
     <developer>
       <name>Peter John</name>
       <email>peter@playlyfe.com</email>
-      <organization>org.apache.maven.model.Organization@6ce0a015</organization>
+      <organization>org.apache.maven.model.Organization@77324fc2</organization>
       <organizationUrl>http://playlyfe.com</organizationUrl>
     </developer>
   </developers>

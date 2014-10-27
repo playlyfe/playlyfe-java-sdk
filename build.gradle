@@ -68,8 +68,8 @@ task createPom << {
             }
             licenses {
                 license {
-                    name 'The Playlyfe License'
-                    url 'https://github.com/playlyfe/playlyfe-java-sdk'
+                    name 'The MIT License (MIT)'
+                    url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
                     distribution 'repo'
                 }
             }
