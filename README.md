@@ -77,7 +77,7 @@ HashMap<String, String> body = new HashMap<String, String>();
 body.put("trigger", "collect");
 playlyfe.post("/processes/"+process_id+"/play", player_id, body);
 
-// A PLaylyfeException is thrown when a error from the playlyfe platform is returned on a request
+// A PLaylyfeException is thrown when an error from the playlyfe platform is returned on a request
 try {
   playlyfe.get("/unkown", null);
 }
@@ -124,7 +124,7 @@ In development the sdk caches the access token in memory so you don"t need to pr
     });
 ```
 
-### API
+**API**
 ```java
 Object api("GET", // The request method can be GET/POST/PUT/PATCH/DELETE
     "", // The api route to get data from
@@ -134,21 +134,21 @@ Object api("GET", // The request method can be GET/POST/PUT/PATCH/DELETE
 )
 ```
 
-### Get
+**Get**
 ```java
 Object get("", // The api route to get data from
     HashMap<string, string>, // The query params that you want to send to the
     false // Whether you want the response to be in raw string form or json
 )
 ```
-### Post
+**Post**
 ```java
 Object post("", // The api route to post data to
     HashMap<string, string>, // The query params that you want to send to the route
     Object or HashMap<string, string> // The data you want to post to the api this will be automagically converted to json
 )
 ```
-### Patch
+**Patch**
 ```java
 Object patch(
     route: "" // The api route to patch data
@@ -156,26 +156,26 @@ Object patch(
     Object or HashMap<string, string> // The data you want to update in the api this will be automagically converted to json
 )
 ```
-### Put
+**Put**
 ```java
 Object put("" // The api route to put data
     HashMap<string, string>, // The query params that you want to send to the route
     Object or HashMap<string, string> // The data you want to update in the api this will be automagically converted to json
 )
 ```
-### Delete
+**Delete**
 ```java
 Object delete("" // The api route to delete the component
     HashMap<string, string> // The query params that you want to send to the route
 )
 ```
-### Get Login Url
+**Get Login Url**
 ```java
 String get_login_url()
 //This will return the url to which the user needs to be redirected for the user to login.
 ```
 
-## Exchange Code
+**Exchange Code**
 ```java
 void exchange_code(String code)
 //This is used in the auth code flow so that the sdk can get the access token.
@@ -183,7 +183,7 @@ void exchange_code(String code)
 //This should be called in the the route/controller which you specified in your redirect_uri
 ```
 
-### Errors
+**Errors**
 A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Error contains a name and message field which can be used to determine the type of error that occurred.
 
 License
