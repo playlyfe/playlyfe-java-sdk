@@ -40,6 +40,7 @@ or if you prefer to use maven
 
   And then note down the client id and client secret you will need it later for using it in the sdk
 
+# Examples
 The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
 To get started create a new playlyfe object using client credentials flow and then start making requests
 ```java
