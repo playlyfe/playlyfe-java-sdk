@@ -1,19 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
+//apply plugin: 'android-library'
 
 sourceCompatibility = 1.6
-version = '0.1.0'
-jar {
-  manifest {
-    attributes 'Implementation-Title': 'Playlyfe Java SDK',
-               'Implementation-Version': version
-  }
-}
+
+version = VERSION_CODE
+group = GROUP
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -23,56 +19,14 @@ dependencies {
   compile 'com.sparkjava:spark-core:1.1.1'
 }
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository(url: "file://localhost/tmp/myRepo/")
-    }
-  }
-}
+//android {
+//    compileSdkVersion 16
+//    defaultConfig {
+//        minSdkVersion 16
+//        targetSdkVersion 16
+//        versionCode VERSION_CODE
+//        versionName VERSION_NAME
+//    }
+//}
 
-publishing {
-  publications {
-    maven(MavenPublication) {
-      groupId 'com.playlyfe.sdk'
-      artifactId 'playlyfe'
-      version version
-
-      from components.java
-    }
-  }
-}
-
-task createPom << {
-    pom {
-        project {
-            inceptionYear '2014'
-            groupId 'com.playlyfe.sdk'
-            artifactId 'playlyfe'
-            version version
-            packaging 'jar'
-            name 'Playlyfe Java SDK'
-            description 'This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows. For a complete API Reference checkout https://dev.playlyfe.com/docs/api.html for more information.'
-            url 'https://github.com/playlyfe/playlyfe-java-sdk'
-            developers {
-              developer {
-                name 'Peter John'
-                email 'peter@playlyfe.com'
-                organization 'Playlyfe IT Solutions Pvt. Ltd'
-                organizationUrl 'http://playlyfe.com'
-              }
-            }
-            scm {
-              connection 'scm:git:git@github.com:playlyfe/playlyfe-java-sdk.git'
-              url 'git:git@github.com:playlyfe/playlyfe-java-sdk.git'
-            }
-            licenses {
-                license {
-                    name 'The MIT License (MIT)'
-                    url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
-                    distribution 'repo'
-                }
-            }
-        }
-    }.writeTo("pom.xml")
-}
+apply from: './maven_push.gradle'

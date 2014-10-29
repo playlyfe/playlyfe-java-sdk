@@ -14,13 +14,13 @@ Install
 ----------
 if you are using gradle then
 ```java
-compile "com.playlyfe.sdk:playlyfe:0.1.0"
+compile "com.playlyfe:sdk:0.1.0"
 ```
 or if you prefer to use maven
 ```xml
 <dependency>
-    <groupId>com.playlyfe.sdk</groupId>
-    <artifactId>playlyfe</artifactId>
+    <groupId>com.playlyfe</groupId>
+    <artifactId>sdk</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
