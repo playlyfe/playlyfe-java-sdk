@@ -1,6 +1,6 @@
 ![Playlyfe Java SDK](./images/pl-java-sdk.png "Playlyfe Java SDK")
 
-Playlyfe Java SDK[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.playlyfe.sdk/playlyfe/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/cz.jirutka.rsql/rsql-parser)
+Playlyfe Java SDK[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.playlyfe/sdk/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.playlyfe/sdk)
 =================
 This is the official OAuth 2.0 Java client SDK for the Playlyfe API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
