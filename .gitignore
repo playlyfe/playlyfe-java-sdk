@@ -4,5 +4,9 @@ build/classes
 build/poms
 build/reports
 build/tmp
+build/docs
 build/test-results
 build/dependency-cache
+build/ivy.xml
+*.asc
+*.iml

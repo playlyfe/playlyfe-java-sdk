@@ -3,8 +3,6 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 //apply plugin: 'android-library'
 
-sourceCompatibility = 1.6
-
 version = VERSION_CODE
 group = GROUP
 

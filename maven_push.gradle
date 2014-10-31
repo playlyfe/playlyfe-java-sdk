@@ -19,14 +19,13 @@ afterEvaluate { project ->
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                pom.artifactId = POM_ARTIFACT_ID
-
                 repository(url: sonatypeRepositoryUrl) {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
 
                 pom.project {
                     name POM_NAME
+                    artifactId POM_ARTIFACT_ID
                     packaging POM_PACKAGING
                     description POM_DESCRIPTION
                     url POM_URL
@@ -61,6 +60,20 @@ afterEvaluate { project ->
         sign configurations.archives
     }
 
+
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
     artifacts {
+        archives sourcesJar
+        archives javadocJar
     }
 }
