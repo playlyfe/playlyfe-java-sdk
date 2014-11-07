@@ -1,30 +1,82 @@
+plugins {
+  id "com.bmuschko.nexus" version "2.1.1"
+  id "com.github.johnrengelman.shadow" version "1.1.2"
+  id "com.jfrog.bintray" version "0.5"
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
-//apply plugin: 'android-library'
 
-version = VERSION_CODE
-group = GROUP
+group = 'com.playlyfe'
+version = '0.1.0'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
+
 
 dependencies {
   compile 'org.apache.httpcomponents:httpclient:4.3.5'
-  compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
   compile 'com.google.code.gson:gson:2.3'
   compile 'com.sparkjava:spark-core:1.1.1'
 }
 
-//android {
-//    compileSdkVersion 16
-//    defaultConfig {
-//        minSdkVersion 16
-//        targetSdkVersion 16
-//        versionCode VERSION_CODE
-//        versionName VERSION_NAME
-//    }
-//}
+modifyPom {
+    project {
+        name 'Playlyfe Java SDK'
+        description 'This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.'
+        url 'https://github.com/playlyfe/playlyfe-java-sdk'
+        inceptionYear '2014'
 
-apply from: './maven_push.gradle'
+        scm {
+            url 'https://github.com/playlyfe/playlyfe-java-sdk'
+            connection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
+            developerConnection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
+        }
+
+        licenses {
+            license {
+                name 'The MIT License (MIT)'
+                url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'playlyfe'
+                name 'Peter John'
+                email 'peter@playlyfe.com'
+            }
+        }
+    }
+}
+
+bintray {
+    user = 'peter'
+    key = 'f5c8c573ad25dae49e3e753cdbf2bd873aafcecf'
+    configurations = ['archives']
+    filesSpec { //When uploading any arbitrary files ('filesSpec' is a standard Gradle CopySpec)
+        from 'arbitrary-files'
+        into 'standalone_files/level1'
+        rename '(.+)\\.(.+)', '$1-suffix.$2'
+    }
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    pkg {
+        repo = 'maven'
+        name = 'com.playlyfe.sdk'
+        desc = 'The Playlyfe API'
+        websiteUrl = 'https://github.com/playlyfe/playlyfe-java-sdk'
+        issueTrackerUrl = 'https://github.com/playlyfe/playlyfe-java-sdk/issues'
+        vcsUrl = 'https://github.com/playlyfe/playlyfe-java-sdk.git'
+        licenses = ['MIT']
+        labels = ['gamification', 'playlyfe']
+        attributes= ['plat': ['linux', 'osx', 'windows']]
+        publicDownloadNumbers = true
+        version {
+            vcsTag = version
+        }
+    }
+}
