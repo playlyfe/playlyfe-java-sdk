@@ -1,6 +1,6 @@
 ![Playlyfe Java SDK](./images/pl-java-sdk.png "Playlyfe Java SDK")
 
-Playlyfe Java SDK[ ![Download](https://api.bintray.com/packages/peter/maven/playlyfe-java-sdk/images/download.svg) ](https://bintray.com/peter/maven/playlyfe-java-sdk/_latestVersion)
+Playlyfe Java SDK[ ![Maven](http://img.shields.io/maven-central/v/com.playlyfe/sdk.svg) ](http://search.maven.org/#artifactdetails|com.playlyfe|sdk|0.1.0|jar)
 =================
 This is the official OAuth 2.0 Java client SDK for the Playlyfe API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
