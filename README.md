@@ -89,7 +89,6 @@ catch(PlaylyfeException err) {
 ```
 
 # Documentation
-## Init
 You can initiate a client by giving the client_id and client_secret params
 ###1. Client Credentials Flow
 ```java
