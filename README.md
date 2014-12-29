@@ -7,6 +7,15 @@ This is the official OAuth 2.0 Java client SDK for the Playlyfe API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
 For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe.com/docs/api.html) for more information.
 
+> Note: Breaking Changes this is the new version of the sdk which uses the Playlyfe api v2 by default if you still want to use the v1 api you can do that so by passing a version key in the options when creating a client with 'v1' as the value
+
+ex: 
+```java
+playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
+```
+
+
+
 Requires
 --------
 Java >= 1.6
@@ -15,14 +24,14 @@ Install
 ----------
 if you are using gradle then
 ```java
-compile "com.playlyfe:sdk:0.1.0"
+compile "com.playlyfe:sdk:0.2.0"
 ```
 or if you prefer to use maven
 ```xml
 <dependency>
     <groupId>com.playlyfe</groupId>
     <artifactId>sdk</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 # Using
@@ -44,9 +53,10 @@ or if you prefer to use maven
 # Examples
 The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
 To get started create a new playlyfe object using client credentials flow and then start making requests
+**For api v1**
 ```java
 try {
-    Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null);
+    Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
 } catch (ClientProtocolException e) {
     e.printStackTrace();
 } catch (IOException e) {
@@ -88,7 +98,52 @@ catch(PlaylyfeException err) {
   System.out.println (err.getMessage()); // This route does not exist
 }
 ```
+**For api v2**
+```java
+try {
+    Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null);
+} catch (ClientProtocolException e) {
+    e.printStackTrace();
+} catch (IOException e) {
+    e.printStackTrace();
+} catch (IllegalStateException e) {
+    e.printStackTrace();
+} catch (URISyntaxException e) {
+    e.printStackTrace();
+} catch (PlaylyfeException e) {
+    e.printStackTrace();
+}
 
+HashMap<String, String> player_id = new HashMap<String, String>();
+player_id.put("player_id", "student1");
+// To get infomation of a  player
+Map<String, Object> player = (Map<String, Object>)playlyfe.get("/runtime/player", player_id);
+System.out.println(student1.get("id"));
+System.out.println(student1.get("alias"));
+
+// To get all available processes
+Object processes = playlyfe.get("/runtime/processes", player_id);
+System.out.println(processes);
+// To start a process
+HashMap<String, String> body = new HashMap<String, String>();
+body.put("name", "patched_process");
+body.put("definition", "collect");
+process =  playlyfe.post("/runtime/processes/",player_id, body);
+
+//To play a process
+HashMap<String, String> body = new HashMap<String, String>();
+body.put("trigger", "collect");
+playlyfe.post("/runtime/processes/"+process_id+"/play", player_id, body);
+
+// A PLaylyfeException is thrown when an error from the playlyfe platform is returned on a request
+try {
+  playlyfe.get("/unknown", null);
+}
+catch(PlaylyfeException err) {
+  System.out.println (err.getName()); // route_not_found
+  System.out.println (err.getMessage()); // This route does not exist
+}
+```
 # Documentation
 You can initiate a client by giving the client_id and client_secret params
 ###1. Client Credentials Flow
@@ -189,7 +244,7 @@ A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Er
 
 License
 =======
-Playlyfe Java SDK v0.1.0  
+Playlyfe Java SDK v0.2.0  
 http://dev.playlyfe.com/  
 Copyright(c) 2013-2014, Playlyfe IT Solutions Pvt. Ltd, support@playlyfe.com
 

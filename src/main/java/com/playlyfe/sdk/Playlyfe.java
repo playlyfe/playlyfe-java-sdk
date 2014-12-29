@@ -25,7 +25,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class Playlyfe {
-
+	
+	private String version;
 	private String client_id;
 	private String client_secret;
 	private String type;
@@ -33,7 +34,7 @@ public class Playlyfe {
 	private String code;
 	private PersistAccessToken pac;
 
-	private final String API_ENDPOINT = "api.playlyfe.com/v1";
+	private final String API_ENDPOINT = "api.playlyfe.com/";
 
 	private final HttpClient client = HttpClientBuilder.create().build();
 	private final Gson gson = new Gson();
@@ -43,12 +44,17 @@ public class Playlyfe {
 	 * @params String client_secret Your client secret
 	 * @params PersistAccessToken pac Your implementation to store and load the access token from a database
 	 */
-    public Playlyfe(String client_id, String client_secret, PersistAccessToken pac) throws ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
+    public Playlyfe(String client_id, String client_secret, PersistAccessToken pac, String version) throws ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
     	this.client_id = client_id;
     	this.client_secret = client_secret;
     	this.type = "client";
     	this.pac = pac;
+    	this.version = version;
     	getAccessToken();
+    }
+    
+    public Playlyfe(String client_id, String client_secret, PersistAccessToken pac) throws ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
+    	this(client_id, client_secret, pac, "v2");
     }
 
     /* Use this to initialize the Playlyfe sdk in authorization code flow
@@ -58,11 +64,16 @@ public class Playlyfe {
 	 * @params PersistAccessToken pac Your implementation to store and load the access token from a database
 	 */
     public Playlyfe(String client_id, String client_secret, String redirect_uri, PersistAccessToken pac) {
+    	this(client_id, client_secret, redirect_uri, pac, "v2");
+    }
+    
+    public Playlyfe(String client_id, String client_secret, String redirect_uri, PersistAccessToken pac, String version) {
     	this.client_id = client_id;
     	this.client_secret = client_secret;
     	this.redirect_uri = redirect_uri;
     	this.type = "code";
     	this.pac = pac;
+    	this.version =  version;
     }
 
     public void getAccessToken() throws UnsupportedEncodingException,ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
@@ -104,7 +115,7 @@ public class Playlyfe {
 
     public Object api(String method, String route, Map<String, String> query, Object body, boolean raw) throws URISyntaxException, IllegalStateException, ClientProtocolException, IOException, PlaylyfeException {
     	URIBuilder builder = new URIBuilder();
-    	builder.setScheme("https").setHost(API_ENDPOINT).setPath(route);
+    	builder.setScheme("https").setHost(API_ENDPOINT).setPath(this.version+route);
     	if (query != null) {
     		for (Map.Entry<String, String> entry : query.entrySet())
         	{
