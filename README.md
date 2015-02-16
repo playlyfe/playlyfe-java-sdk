@@ -1,6 +1,6 @@
 ![Playlyfe Java SDK](./images/pl-java-sdk.png "Playlyfe Java SDK")
 
-Playlyfe Java SDK [![Maven](http://img.shields.io/maven-central/v/com.playlyfe/sdk.svg)](http://search.maven.org/#artifactdetails|com.playlyfe|sdk|0.1.0|jar)
+Playlyfe Java SDK [![Maven](http://img.shields.io/maven-central/v/com.playlyfe/playlyfe-java-sdk.svg)](http://search.maven.org/#artifactdetails|com.playlyfe|playlyfe-java-sdk|0.2.0|jar)
 =================
 
 This is the official OAuth 2.0 Java client SDK for the Playlyfe API.
@@ -9,7 +9,7 @@ For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe
 
 > Note: Breaking Changes this is the new version of the sdk which uses the Playlyfe api v2 by default if you still want to use the v1 api you can do that so by passing a version key in the options when creating a client with 'v1' as the value
 
-ex: 
+ex:
 ```java
 playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
 ```
@@ -30,7 +30,7 @@ or if you prefer to use maven
 ```xml
 <dependency>
     <groupId>com.playlyfe</groupId>
-    <artifactId>sdk</artifactId>
+    <artifactId>playlyfe-java-sdk</artifactId>
     <version>0.2.0</version>
 </dependency>
 ```
