@@ -24,7 +24,7 @@ Install
 ----------
 if you are using gradle then
 ```java
-compile "com.playlyfe:sdk:0.2.0"
+compile "com.playlyfe:playlyfe-java-sdk:0.2.0"
 ```
 or if you prefer to use maven
 ```xml
