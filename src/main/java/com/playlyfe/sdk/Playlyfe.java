@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class Playlyfe {
-	
+
 	private String version;
 	private String client_id;
 	private String client_secret;
@@ -52,7 +52,7 @@ public class Playlyfe {
     	this.version = version;
     	getAccessToken();
     }
-    
+
     public Playlyfe(String client_id, String client_secret, PersistAccessToken pac) throws ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
     	this(client_id, client_secret, pac, "v2");
     }
@@ -66,7 +66,7 @@ public class Playlyfe {
     public Playlyfe(String client_id, String client_secret, String redirect_uri, PersistAccessToken pac) {
     	this(client_id, client_secret, redirect_uri, pac, "v2");
     }
-    
+
     public Playlyfe(String client_id, String client_secret, String redirect_uri, PersistAccessToken pac, String version) {
     	this.client_id = client_id;
     	this.client_secret = client_secret;
@@ -77,7 +77,8 @@ public class Playlyfe {
     }
 
     public void getAccessToken() throws UnsupportedEncodingException,ClientProtocolException, IOException, IllegalStateException, PlaylyfeException {
-   	 	JsonObject json = new JsonObject();
+    	System.out.println("Getting Access Token");
+    	JsonObject json = new JsonObject();
 	    json.addProperty("client_id", client_id);
 	    json.addProperty("client_secret", client_secret);
     	if(type.equals("client")) {
@@ -88,31 +89,38 @@ public class Playlyfe {
     		json.addProperty("code",  code);
     		json.addProperty("redirect_uri", redirect_uri);
     	}
-		HttpPost post = new HttpPost("https://playlyfe.com/auth/token");
-		StringEntity input = new StringEntity(json.toString());
-		input.setContentType("application/json");
-	    post.setEntity(input);
-		final Map<String, Object> token = (Map<String, Object>) parseJson(client.execute(post));
-		Long expires_at = (((Double) token.get("expires_in")).longValue() + (System.currentTimeMillis()/1000)) * 1000;
-		token.remove("expires_in");
-		token.put("expires_at", expires_at);
-		if(pac == null) {
-			pac = new PersistAccessToken(){
-				@Override
-				public void store(Map<String, Object> token) {
-					System.out.println("Storing Access Token");
-				}
+  		HttpPost post = new HttpPost("https://playlyfe.com/auth/token");
+  		StringEntity input = new StringEntity(json.toString());
+  		input.setContentType("application/json");
+  	    post.setEntity(input);
+  		final Map<String, Object> token = (Map<String, Object>) parseJson(client.execute(post));
+  		Long expires_at = System.currentTimeMillis() + (((Double) token.get("expires_in")).longValue() * 1000);
+  		token.remove("expires_in");
+  		token.put("expires_at", expires_at);
+  		if(pac == null) {
+    			pac = new PersistAccessToken(){
+    				@Override
+    				public void store(Map<String, Object> token) {
+    					System.out.println("Storing Access Token");
+    				}
 
-				@Override
-				public Map<String, Object> load() {
-					return token;
-				}
+    				@Override
+    				public Map<String, Object> load() {
+    					return token;
+    				}
 
-			};
-		}
-		pac.store(token);
+    			};
+  		}
+  		pac.store(token);
     }
 
+    /* Use this to make a request to the Playlyfe API
+    * @params String method The type of request ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    * @params String route The Playlyfe API route
+    * @params Map<String, String> The query params for the request
+    * @params Object body The data you would like to send in your POST, PUT, PATCH requests
+    * @params boolean raw  Whether you would like the response to be string or a Map (Useful for images)
+    */
     public Object api(String method, String route, Map<String, String> query, Object body, boolean raw) throws URISyntaxException, IllegalStateException, ClientProtocolException, IOException, PlaylyfeException {
     	URIBuilder builder = new URIBuilder();
     	builder.setScheme("https").setHost(API_ENDPOINT).setPath(this.version+route);
@@ -176,7 +184,7 @@ public class Playlyfe {
     public Object get(String route, Map<String, String> query) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
 	    return api("GET", route, query, null, false);
     }
-    
+
     public Object get(String route, Map<String, String> query, boolean raw) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
 	    return api("GET", route, query, null, raw);
     }
@@ -199,7 +207,7 @@ public class Playlyfe {
 
     private String readResponse(HttpResponse response) throws IllegalStateException, IOException {
     	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		StringBuilder sb = new StringBuilder();
+		  StringBuilder sb = new StringBuilder();
 	    String line = "";
 	    while ((line = rd.readLine()) != null) {
 	       sb.append(line);
@@ -225,8 +233,8 @@ public class Playlyfe {
     		.setParameter("response_type", "code")
     		.setParameter("client_id", client_id)
     		.setParameter("redirect_uri", redirect_uri);
-		return builder.build().toString();
-	}
+		  return builder.build().toString();
+	 }
 
 	public void exchange_code(String code) throws UnsupportedEncodingException, ClientProtocolException, IllegalStateException, IOException, PlaylyfeException {
 		this.code = code;
