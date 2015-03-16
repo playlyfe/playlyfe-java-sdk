@@ -158,23 +158,31 @@ import com.playlyfe.sdk.Playlyfe;
 
 Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", "Your redirect URI", null)
 ```
-In development the sdk caches the access token in memory so you don"t need to provide the persist access token object. But in production it is highly recommended to persist the token to a database. It is very simple and easy to do it with redis. You can see the test cases for more examples.
+In development the sdk caches the access token in memory so you don"t need to  the persist access token object. But in production it is highly recommended to persist the token to a database. It is very simple and easy to do it with redis. You can see the test cases for more examples.
+You need to return a HashMap<String, Object> which has the keys access_token and expires_at.
 ```java
     import com.playlyfe.sdk.Playlyfe;
     import com.playlyfe.sdk.PersistAccessToken;
 
-    Playlyfe("Your client id", "Your client secret", new PersistAccessToken(){
+    final HashMap<String, Object> access_token = new HashMap<String, Object>();
+    Playlyfe pl = new Playlyfe("Your client id", "Your client secret", new PersistAccessToken(){
 
         // This will persist the access token to a database. You have to persist the token to a database if you want the access token to remain the same in every request
         @Override
         public void store(Map<String, Object> token) {
             System.out.println("Storing Access Token");
+            access_token.put("expires_at", token.get("expires_at"));
+            access_token.put("access_token", token.get("access_token"));
         }
 
-        // This will load the access token. This is called internally by the sdk on every request so that the access token can be persisted between requests
+        // This will load the access token. This is called internally by the sdk on every request so that the persisted access token can be used between requests
         @Override
         public Map<String, Object> load() {
-            return token;
+            System.out.println("Loading Access Token");
+            System.out.println("Current Time: "+System.currentTimeMillis());
+            System.out.println("Expires At: "+access_token.get("expires_at"));
+            //access_token.put("expires_at", System.currentTimeMillis() - 100);
+            return access_token;
         }
 
     });
