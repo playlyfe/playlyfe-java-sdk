@@ -1,19 +1,11 @@
-plugins {
-  id "com.bmuschko.nexus" version "2.1.1"
-  id "com.jfrog.bintray" version "0.5"
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
-
-group = 'com.playlyfe'
-version = '0.2.0'
+apply plugin: 'signing'
+apply plugin: 'maven'
 
 repositories {
-    mavenCentral()
-    jcenter()
+  mavenCentral()
 }
-
 
 dependencies {
   compile 'org.apache.httpcomponents:httpclient:4.3.5'
@@ -21,61 +13,63 @@ dependencies {
   compile 'com.sparkjava:spark-core:1.1.1'
 }
 
-modifyPom {
-    project {
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+mavenPomDir = "build/libs"
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: '')
+      pom.version = '0.2.0'
+      pom.groupId = 'com.playlyfe'
+      pom.artifactId = 'playlyfe-java-sdk'
+      pom.project {
         name 'Playlyfe Java SDK'
         description 'This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.'
         url 'https://github.com/playlyfe/playlyfe-java-sdk'
         inceptionYear '2014'
 
         scm {
-            url 'https://github.com/playlyfe/playlyfe-java-sdk'
-            connection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
-            developerConnection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
+          url 'https://github.com/playlyfe/playlyfe-java-sdk'
+          connection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
+          developerConnection 'scm:git@github.com:playlyfe/playlyfe-java-sdk.git'
         }
-
         licenses {
-            license {
-                name 'The MIT License (MIT)'
-                url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
-                distribution 'repo'
-            }
+          license {
+              name 'The MIT License (MIT)'
+              url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
+              distribution 'repo'
+          }
         }
 
         developers {
-            developer {
-                id 'playlyfe'
-                name 'Peter John'
-                email 'peter@playlyfe.com'
-            }
+          developer {
+              id 'playlyfe'
+              name 'Peter John'
+              email 'peter@playlyfe.com'
+          }
         }
+      }
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
     }
-}
-
-bintray {
-    user = 'peter'
-    key = 'f5c8c573ad25dae49e3e753cdbf2bd873aafcecf'
-    configurations = ['archives']
-    filesSpec { //When uploading any arbitrary files ('filesSpec' is a standard Gradle CopySpec)
-        from 'arbitrary-files'
-        into 'standalone_files/level1'
-        rename '(.+)\\.(.+)', '$1-suffix.$2'
-    }
-    dryRun = false //Whether to run this as dry-run, without deploying
-    publish = true //If version should be auto published after an upload
-    pkg {
-        repo = 'maven'
-        name = 'com.playlyfe.sdk'
-        desc = 'The Playlyfe API'
-        websiteUrl = 'https://github.com/playlyfe/playlyfe-java-sdk'
-        issueTrackerUrl = 'https://github.com/playlyfe/playlyfe-java-sdk/issues'
-        vcsUrl = 'https://github.com/playlyfe/playlyfe-java-sdk.git'
-        licenses = ['MIT']
-        labels = ['gamification', 'playlyfe']
-        attributes= ['plat': ['linux', 'osx', 'windows']]
-        publicDownloadNumbers = true
-        version {
-            vcsTag = version
-        }
-    }
+  }
 }
