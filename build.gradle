@@ -32,6 +32,10 @@ signing {
   sign configurations.archives
 }
 
+allprojects { ext."signing.keyId" = 'my_key' }
+allprojects { ext."signing.secretKeyRingFile" = '/home/username/.gnupg/secring.gpg' }
+allprojects { ext."signing.password" = 'password' }
+
 
 mavenPomDir = "build/libs"
 
