@@ -11,6 +11,7 @@ dependencies {
   compile 'org.apache.httpcomponents:httpclient:4.3.5'
   compile 'com.google.code.gson:gson:2.3'
   compile 'com.sparkjava:spark-core:1.1.1'
+  compile 'com.auth0:java-jwt:2.0.1'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -33,13 +34,14 @@ signing {
   sign configurations.archives
 }
 
+
 mavenPomDir = "build/libs"
 
 uploadArchives {
   repositories {
     mavenDeployer {
       repository(url: '')
-      pom.version = '0.2.0'
+      pom.version = '0.3.0'
       pom.groupId = 'com.playlyfe'
       pom.artifactId = 'playlyfe-java-sdk'
       pom.project {
@@ -58,6 +60,7 @@ uploadArchives {
               name 'The MIT License (MIT)'
               url 'https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md'
               distribution 'repo'
+
           }
         }
 

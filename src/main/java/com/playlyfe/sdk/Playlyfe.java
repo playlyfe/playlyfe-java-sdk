@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -23,6 +24,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.auth0.jwt.Algorithm;
+import com.auth0.jwt.JWTSigner;
 
 public class Playlyfe {
 
@@ -38,6 +41,16 @@ public class Playlyfe {
 
 	private final HttpClient client = HttpClientBuilder.create().build();
 	private final Gson gson = new Gson();
+
+	public static String createJWT(String client_id, String client_secret, String player_id, String[] scopes, int expires) {
+		JWTSigner signer = new JWTSigner(client_secret);
+		HashMap<String, Object> claims = new HashMap<String, Object>();
+		claims.put("player_id", player_id);
+		claims.put("scopes", scopes);
+		String token = signer.sign(claims, new JWTSigner.Options().setExpirySeconds(expires).setAlgorithm(Algorithm.HS256));
+		token = client_id + ':' + token;
+		return token;
+	}
 
 	/* Use this to initialize the Playlyfe sdk in client credentials flow
 	 * @params String client_id Your client id

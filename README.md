@@ -187,6 +187,19 @@ You need to return a HashMap<String, Object> which has the keys access_token and
 
     });
 ```
+## 3. Custom Login Flow using JWT(JSON Web Token)
+```java
+import com.playlyfe.sdk.Playlyfe;
+
+String[] scopes = {"player.runtime.read", "player.runtime.write"};
+String token = Playlyfe.createJWT("your client_id", "your client_secret", 
+    "player_id", // The player id associated with your user
+    scopes, // The scopes the player has access to
+    3600; // 1 hour expiry Time
+);
+```
+This is used to create jwt token which can be created when your user is authenticated. This token can then be sent to the frontend and or stored in your session. With this token the user can directly send requests to the Playlyfe API as the player.
+
 
 **API**
 ```java

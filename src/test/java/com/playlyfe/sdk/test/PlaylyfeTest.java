@@ -16,7 +16,7 @@ import java.util.prefs.Preferences;
 
 public class PlaylyfeTest {
 
-  public static Preferences prefs;
+	public static Preferences prefs;
 
 	public static void testv1() {
 		Playlyfe pl = null;
@@ -124,7 +124,7 @@ public class PlaylyfeTest {
 		}
 	}
 
-  public static void testExpiresAt() {
+	public static void testExpiresAt() {
     try {
     	final HashMap<String, Object> access_token = new HashMap<String, Object>();
     	Playlyfe pl = new Playlyfe(
@@ -165,7 +165,7 @@ public class PlaylyfeTest {
 	}
   }
 
-  public static void testWrongRoute() {
+  	public static void testWrongRoute() {
 	  try {
 		  Playlyfe pl = new Playlyfe(
 			"Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
@@ -190,11 +190,18 @@ public class PlaylyfeTest {
 		}
   }
 
+  public static void testJWT() {
+    String[] scopes = {"player.runtime.read", "player.runtime.write"};
+    String token = Playlyfe.createJWT("MWYwZGYzNTYtZGIxNy00OGM5LWExZGMtZjBjYTFiN2QxMTlh",  "NmM2YTcxOGYtNGE2ZC00ZDdhLTkyODQtYTIwZTE4ZDc5YWNjNWFiNzBiYjAtZmZiMC0xMWU0LTg5YzctYzc5NWNiNzA1Y2E4", "student1", scopes , 3600);
+    System.out.println(token);
+  }
+
 	public static void main(String[] args) {
 		testWrongRoute();
 		testv1();
 		testv2();
 		testExpiresAt();
+		testJWT();
 	}
 
 }
