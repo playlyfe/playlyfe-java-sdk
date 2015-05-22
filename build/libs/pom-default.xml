@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.playlyfe</groupId>
+  <artifactId>playlyfe-java-sdk</artifactId>
+  <version>0.3.0</version>
+  <name>Playlyfe Java SDK</name>
+  <description>This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.</description>
+  <url>https://github.com/playlyfe/playlyfe-java-sdk</url>
+  <inceptionYear>2014</inceptionYear>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>https://github.com/playlyfe/playlyfe-java-sdk/blob/master/LICENSE.md</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>playlyfe</id>
+      <name>Peter John</name>
+      <email>peter@playlyfe.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git@github.com:playlyfe/playlyfe-java-sdk.git</connection>
+    <developerConnection>scm:git@github.com:playlyfe/playlyfe-java-sdk.git</developerConnection>
+    <url>https://github.com/playlyfe/playlyfe-java-sdk</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>2.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sparkjava</groupId>
+      <artifactId>spark-core</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

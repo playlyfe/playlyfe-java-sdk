@@ -25,9 +25,7 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts {
-    archives jar
-    archives javadocJar
-    archives sourcesJar
+  archives jar, javadocJar, sourcesJar
 }
 
 signing {
@@ -40,7 +38,9 @@ mavenPomDir = "build/libs"
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: '')
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: 'username', password: 'password')
+      }
       pom.version = '0.3.0'
       pom.groupId = 'com.playlyfe'
       pom.artifactId = 'playlyfe-java-sdk'
