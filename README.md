@@ -233,8 +233,8 @@ Object post("", // The api route to post data to
 **Patch**
 ```java
 Object patch(
-    route: "" // The api route to patch data
-    query: HashMap<string, string> // The query params that you want to send to the route
+    "" // The api route to patch data
+    HashMap<string, string> // The query params that you want to send to the route
     Object or HashMap<string, string> // The data you want to update in the api this will be automagically converted to json
 )
 ```
