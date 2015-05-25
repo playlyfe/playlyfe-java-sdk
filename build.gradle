@@ -45,7 +45,7 @@ uploadArchives {
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
         authentication(userName: 'username', password: 'password')
       }
-      pom.version = '0.3.0'
+      pom.version = '0.3.1'
       pom.groupId = 'com.playlyfe'
       pom.artifactId = 'playlyfe-java-sdk'
       pom.project {

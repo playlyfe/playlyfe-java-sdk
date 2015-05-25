@@ -1,6 +1,7 @@
 package com.playlyfe.sdk;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -187,7 +188,7 @@ public class Playlyfe {
     	request.addHeader("accept", "application/json");
     	HttpResponse response = client.execute(request);
     	if(raw == true){
-    		return readResponse(response);
+    		return readImage(response);
     	}
     	else {
 			return parseJson(response);
@@ -198,8 +199,8 @@ public class Playlyfe {
 	    return api("GET", route, query, null, false);
     }
 
-    public Object get(String route, Map<String, String> query, boolean raw) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
-	    return api("GET", route, query, null, raw);
+    public byte[] getRaw(String route, Map<String, String> query) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
+	    return (byte[]) api("GET", route, query, null, true);
     }
 
     public Object post(String route, Map<String, String> query, Object body) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
@@ -216,6 +217,20 @@ public class Playlyfe {
 
     public Object delete(String route, Map<String, String> query) throws IllegalStateException, ClientProtocolException, URISyntaxException, IOException, PlaylyfeException {
 	    return api("DELETE", route, query, null, false);
+    }
+    
+    private byte[] readImage(HttpResponse response) throws IllegalStateException, IOException {
+    	try (ByteArrayOutputStream bos = new ByteArrayOutputStream();)
+        {
+            byte[] buffer = new byte[0xFFFF];
+
+            for (int len; (len = response.getEntity().getContent().read(buffer)) != -1;)
+            	bos.write(buffer, 0, len);
+
+            bos.flush();
+
+            return bos.toByteArray();
+        }
     }
 
     private String readResponse(HttpResponse response) throws IllegalStateException, IOException {

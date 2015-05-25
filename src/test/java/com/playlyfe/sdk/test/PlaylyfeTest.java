@@ -55,7 +55,7 @@ public class PlaylyfeTest {
 
 			pl.delete("/processes/" + new_process.get("id"), player_id);
 
-			String content = (String) pl.get("/player", player_id, true);
+			pl.getRaw("/player", player_id);
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -110,7 +110,8 @@ public class PlaylyfeTest {
 
 			pl.delete("/runtime/processes/" + new_process.get("id"), player_id);
 
-			String content = (String) pl.get("/runtime/player", player_id, true);
+			System.out.println(pl.getRaw("/runtime/player", player_id));
+			System.out.println(new String(pl.getRaw("/runtime/player", player_id), "UTF-8"));
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

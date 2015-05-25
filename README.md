@@ -24,14 +24,14 @@ Install
 ----------
 if you are using gradle then
 ```java
-compile "com.playlyfe:playlyfe-java-sdk:0.3.0"
+compile "com.playlyfe:playlyfe-java-sdk:0.3.1"
 ```
 or if you prefer to use maven
 ```xml
 <dependency>
     <groupId>com.playlyfe</groupId>
     <artifactId>playlyfe-java-sdk</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 </dependency>
 ```
 # Using
@@ -215,7 +215,12 @@ Object api("GET", // The request method can be GET/POST/PUT/PATCH/DELETE
 ```java
 Object get("", // The api route to get data from
     HashMap<string, string>, // The query params that you want to send to the
-    false // Whether you want the response to be in raw string form or json
+)
+```
+**Get Raw**
+```java
+byte[] getRaw("", // The api route to get data from
+    HashMap<string, string>, // The query params that you want to send to the
 )
 ```
 **Post**
@@ -265,7 +270,7 @@ A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Er
 
 License
 =======
-Playlyfe Java SDK v0.3.0  
+Playlyfe Java SDK v0.3.1 
 http://dev.playlyfe.com/  
 Copyright(c) 2014-2015, Playlyfe IT Solutions Pvt. Ltd, support@playlyfe.com
 
