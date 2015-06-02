@@ -1,4 +1,4 @@
-![Playlyfe Java SDK](./images/pl-java-sdk.png "Playlyfe Java SDK")
+![Playlyfe Java SDK](https://dev.playlyfe.com/images/assets/pl-java-sdk.png "Playlyfe Java SDK")
 
 Playlyfe Java SDK [![Maven](http://img.shields.io/maven-central/v/com.playlyfe/playlyfe-java-sdk.svg)](http://search.maven.org/#artifactdetails|com.playlyfe|playlyfe-java-sdk|0.2.0|jar)
 =================
@@ -8,47 +8,6 @@ It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
 For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe.com/docs/api.html) for more information.
 
 > Note: Breaking Changes this is the new version of the sdk which uses the Playlyfe api v2 by default if you still want to use the v1 api you can do that so by passing a version key in the options when creating a client with 'v1' as the value
-
-ex:
-```java
-playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
-```
-
-
-
-Requires
---------
-Java >= 1.6
-
-Install
-----------
-if you are using gradle then
-```java
-compile "com.playlyfe:playlyfe-java-sdk:0.3.1"
-```
-or if you prefer to use maven
-```xml
-<dependency>
-    <groupId>com.playlyfe</groupId>
-    <artifactId>playlyfe-java-sdk</artifactId>
-    <version>0.3.1</version>
-</dependency>
-```
-# Using
-### Create a client
-  If you haven't created a client for your game yet just head over to [Playlyfe](http://playlyfe.com) and login into your account, and go to the game settings and click on client
-
-  **1.Client Credentials Flow**
-    In the client page click on whitelabel client
-    ![Creating a Whitelabel Client](./images/client.png "Creating a Whitelabel Client")
-
-  **2.Authorization Code Flow**
-    In the client page click on backend client and specify the redirect uri this will be the url where you will be redirected to get the token
-    ![Creating a Backend Client](./images/auth.png "Creating a Backend Client")
-
-> Note: If you want to test the sdk in staging you can click the Test Client button.
-
-  And then note down the client id and client secret you will need it later for using it in the sdk
 
 # Examples
 The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
@@ -144,15 +103,40 @@ catch(PlaylyfeException err) {
   System.out.println (err.getMessage()); // This route does not exist
 }
 ```
-# Documentation
-You can initiate a client by giving the client_id and client_secret params
+
+Requires
+--------
+Java >= 1.6
+
+Install
+----------
+if you are using gradle then
+```java
+compile "com.playlyfe:playlyfe-java-sdk:0.3.1"
+```
+or if you prefer to use maven
+```xml
+<dependency>
+    <groupId>com.playlyfe</groupId>
+    <artifactId>playlyfe-java-sdk</artifactId>
+    <version>0.3.1</version>
+</dependency>
+```
+# Using
+### Create a client
+  If you haven't created a client for your game yet just head over to [Playlyfe](http://playlyfe.com) and login into your account, and go to the game settings and click on client.
+
 ###1. Client Credentials Flow
+In the client page select Yes for both the first and second questions
+![client](https://cloud.githubusercontent.com/assets/1687946/7930229/2c2f14fe-0924-11e5-8c3b-5ba0c10f066f.png)
 ```java
 import com.playlyfe.sdk.Playlyfe;
 
 Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null)
 ```
 ###2. Authorization Code Flow
+In the client page select yes for the first question and no for the second
+![auth](https://cloud.githubusercontent.com/assets/1687946/7930231/2c31c1fe-0924-11e5-8cb5-73ca0a002bcb.png)
 ```java
 import com.playlyfe.sdk.Playlyfe;
 
@@ -188,6 +172,8 @@ You need to return a HashMap<String, Object> which has the keys access_token and
     });
 ```
 ## 3. Custom Login Flow using JWT(JSON Web Token)
+In the client page select no for the first question and yes for the second
+![jwt](https://cloud.githubusercontent.com/assets/1687946/7930230/2c2f2caa-0924-11e5-8dcf-aed914a9dd58.png)
 ```java
 import com.playlyfe.sdk.Playlyfe;
 
