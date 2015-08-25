@@ -151,6 +151,7 @@ Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", "Your r
 ```
 In development the sdk caches the access token in memory so you don"t need to  the persist access token object. But in production it is highly recommended to persist the token to a database. It is very simple and easy to do it with redis. You can see the test cases for more examples.
 You need to return a HashMap<String, Object> which has the keys access_token and expires_at.
+The access token in fetched on the first request you make and so in the load method you need to return null if your database doesn't hasn't stored an access token yet.
 ```java
 import com.playlyfe.sdk.Playlyfe;
 import com.playlyfe.sdk.Playlyfe.PersistAccessToken;
@@ -172,7 +173,9 @@ Playlyfe pl = new Playlyfe("Your client id", "Your client secret", new PersistAc
         System.out.println("Loading Access Token");
         System.out.println("Current Time: "+System.currentTimeMillis());
         System.out.println("Expires At: "+access_token.get("expires_at"));
-        //access_token.put("expires_at", System.currentTimeMillis() - 100);
+        if (access_token.get("expires_at") == null) { // This means there is not access token, so this will trigger the sdk to get an access token
+            return null;
+        }
         return access_token;
     }
 
@@ -484,6 +487,19 @@ Object deleteAsync("" // The api route to delete the component
 
 **Errors**  
 A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Error contains a name and message field which can be used to determine the type of error that occurred.
+
+## Development
+You need to have these tools,
+1.`gradle >= 2.2`
+2.`jdk >= 7`
+
+To install all dependencies run
+`gradle build`
+
+**Eclipse IDE**
+
+If you are using eclipse then run this gradle task
+`gradle eclipse`
 
 License
 =======
