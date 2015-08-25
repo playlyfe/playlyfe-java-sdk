@@ -4,9 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.playlyfe</groupId>
   <artifactId>playlyfe-java-sdk</artifactId>
-  <version>0.3.0</version>
-  <name>Playlyfe Java SDK</name>
-  <description>This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.</description>
+  <version>1.0.0</version>
+  <name>Playlyfe Java and Android SDK</name>
+  <description>This is the official OAuth 2.0 Java and Android client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.</description>
   <url>https://github.com/playlyfe/playlyfe-java-sdk</url>
   <inceptionYear>2014</inceptionYear>
   <licenses>
@@ -30,27 +30,21 @@
   </scm>
   <dependencies>
     <dependency>
+      <groupId>com.squareup.okhttp</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>2.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>2.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.3.5</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.3</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sparkjava</groupId>
-      <artifactId>spark-core</artifactId>
-      <version>1.1.1</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
