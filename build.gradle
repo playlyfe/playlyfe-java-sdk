@@ -8,9 +8,8 @@ repositories {
 }
 
 dependencies {
-  compile 'org.apache.httpcomponents:httpclient:4.3.5'
+  compile 'com.squareup.okhttp:okhttp:2.4.0'
   compile 'com.google.code.gson:gson:2.3'
-  compile 'com.sparkjava:spark-core:1.1.1'
   compile 'com.auth0:java-jwt:2.0.1'
 }
 
@@ -22,6 +21,12 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
+}
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 artifacts {
@@ -45,12 +50,12 @@ uploadArchives {
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
         authentication(userName: 'username', password: 'password')
       }
-      pom.version = '0.3.1'
+      pom.version = '1.0.0'
       pom.groupId = 'com.playlyfe'
       pom.artifactId = 'playlyfe-java-sdk'
       pom.project {
-        name 'Playlyfe Java SDK'
-        description 'This is the official OAuth 2.0 Java client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.'
+        name 'Playlyfe Java and Android SDK'
+        description 'This is the official OAuth 2.0 Java and Android client SDK for the Playlyfe API. It supports the client_credentials and authorization code OAuth 2.0 flows.'
         url 'https://github.com/playlyfe/playlyfe-java-sdk'
         inceptionYear '2014'
 

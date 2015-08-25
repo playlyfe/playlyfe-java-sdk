@@ -1,16 +1,14 @@
 package com.playlyfe.sdk.test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
-
-import com.playlyfe.sdk.PersistAccessToken;
 import com.playlyfe.sdk.Playlyfe;
-import com.playlyfe.sdk.PlaylyfeException;
+import com.playlyfe.sdk.Playlyfe.Callback;
+import com.playlyfe.sdk.Playlyfe.PersistAccessToken;
+import com.playlyfe.sdk.Playlyfe.PlaylyfeException;
 
 import java.util.prefs.Preferences;
 
@@ -57,13 +55,7 @@ public class PlaylyfeTest {
 
 			pl.getRaw("/player", player_id);
 
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		} catch (PlaylyfeException e) {
 			e.printStackTrace();
@@ -112,13 +104,7 @@ public class PlaylyfeTest {
 
 			System.out.println(pl.getRaw("/runtime/player", player_id));
 			System.out.println(new String(pl.getRaw("/runtime/player", player_id), "UTF-8"));
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		} catch (PlaylyfeException e) {
 			e.printStackTrace();
@@ -144,7 +130,12 @@ public class PlaylyfeTest {
 	              System.out.println("Current Time: "+System.currentTimeMillis());
 	              System.out.println("Expires At: "+access_token.get("expires_at"));
 	              //access_token.put("expires_at", System.currentTimeMillis() - 100);
-	              return access_token;
+	              if (access_token.get("expires_at") == null) {
+	            	  return null;
+	              }
+	              else {
+	            	  return access_token;
+	              }
 	          }
 	        }
       );
@@ -153,17 +144,11 @@ public class PlaylyfeTest {
   	  pl.get("/runtime/players", player_id);
   	  pl.get("/runtime/players", player_id);
   	  pl.get("/runtime/players", player_id);
-    } catch (ClientProtocolException e) {
-      e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
-    } catch (IllegalStateException e) {
       e.printStackTrace();
     } catch (PlaylyfeException e) {
       e.printStackTrace();
-    } catch (URISyntaxException e) {
-		e.printStackTrace();
-	}
+    }
   }
 
   	public static void testWrongRoute() {
@@ -177,12 +162,6 @@ public class PlaylyfeTest {
 		  HashMap<String, String> player_id = new HashMap<String, String>();
 		  player_id.put("player_id", "student1");
 		  pl.get ("/unkown", player_id);
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (PlaylyfeException e) {
@@ -191,18 +170,62 @@ public class PlaylyfeTest {
 		}
   }
 
-  public static void testJWT() {
-    String[] scopes = {"player.runtime.read", "player.runtime.write"};
-    String token = Playlyfe.createJWT("MWYwZGYzNTYtZGIxNy00OGM5LWExZGMtZjBjYTFiN2QxMTlh",  "NmM2YTcxOGYtNGE2ZC00ZDdhLTkyODQtYTIwZTE4ZDc5YWNjNWFiNzBiYjAtZmZiMC0xMWU0LTg5YzctYzc5NWNiNzA1Y2E4", "student1", scopes , 3600);
-    System.out.println(token);
-  }
+   public static void testJWT() {
+      String[] scopes = {"player.runtime.read", "player.runtime.write"};
+      String token = Playlyfe.createJWT("MWYwZGYzNTYtZGIxNy00OGM5LWExZGMtZjBjYTFiN2QxMTlh",  "NmM2YTcxOGYtNGE2ZC00ZDdhLTkyODQtYTIwZTE4ZDc5YWNjNWFiNzBiYjAtZmZiMC0xMWU0LTg5YzctYzc5NWNiNzA1Y2E4", "student1", scopes , 3600);
+      System.out.println(token);
+   }
+   
+   public static void testAsync() {
+	    Playlyfe pl = null;
+		pl = new Playlyfe(
+		    "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
+			"YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
+			null,
+			"v2"
+		);
+	   HashMap<String, String> player_id = new HashMap<String, String>();
+	   player_id.put("player_id", "student1");
+       pl.getAsync("/unkown", player_id, new Callback() {
+		@Override
+		public void onSuccess(Object data) {
+		}
+		@Override
+		public void onPlaylyfeError(PlaylyfeException e) {
+			System.out.println(e.getName());
+			System.out.println(e.getMessage());
+		}
+		@Override
+		public void onIOError(IOException e) {	
+		}
+       });
+       pl.getAsync("/runtime/player", player_id, new Callback() {
+   		@Override
+   		public void onSuccess(Object data) {
+   			Map<String, Object> student1 = (Map<String, Object>) data;
+			System.out.println(student1.get("id"));
+			System.out.println(student1.get("alias"));
+			System.out.println("All Tests Finished");
+			System.exit(0);
+   		}
+   		@Override
+   		public void onPlaylyfeError(PlaylyfeException e) {
+   			System.out.println("Last Test Failed");
+   		}
+   		@Override
+   		public void onIOError(IOException e) {	
+   			System.out.println("Last Test Failed");
+   		}
+      });
+   }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 		testWrongRoute();
 		testv1();
 		testv2();
 		testExpiresAt();
 		testJWT();
+		testAsync();
 	}
 
 }
