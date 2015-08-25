@@ -151,7 +151,7 @@ Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", "Your r
 ```
 In development the sdk caches the access token in memory so you don"t need to  the persist access token object. But in production it is highly recommended to persist the token to a database. It is very simple and easy to do it with redis. You can see the test cases for more examples.
 You need to return a HashMap<String, Object> which has the keys access_token and expires_at.
-The access token in fetched on the first request you make and so in the load method you need to return null if your database doesn't hasn't stored an access token yet.
+The access token in fetched on the first request you make and so in the load method you need to return null if your database hasn't stored an access token yet.
 ```java
 import com.playlyfe.sdk.Playlyfe;
 import com.playlyfe.sdk.Playlyfe.PersistAccessToken;
@@ -291,7 +291,7 @@ playlyfe.getAsync("/runtime/player", player_id, new Callback(){
     }
 });
 ```
-Of Course you can just create a class that implements the Callback Interface and handle all the errors from that one class and initiate that class on subsequent requests to make things simpler.
+You can just create a class that implements the Callback Interface and handle all the errors from that one class and initiate that class on subsequent requests to make things simpler.
 ```java
 public class ErrorHandler implements Callback {
     @Override
