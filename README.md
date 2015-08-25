@@ -262,10 +262,13 @@ void exchange_code(String code)
 ```
 
 ## Async Methods
-For the async methods you first need to pass a callback inteface to the all the methods. The Callback Interface has 3 methods, 
-1.onSucess -> called when the request succeeds with a 200 OK status
-2.onPlaylyfeError -> called when request gets status other than 200 and has err field in the response body
-3.onIOError -> called when a io error occurs
+For the async methods you first need to pass a callback inteface to the all the methods. The Callback Interface has 3 methods,
+
+**1.onSucess** called when the request succeeds with a 200 OK status
+
+**2.onPlaylyfeError** called when request gets status other than 200 and has err field in the response body
+
+**3.onIOError** called when a io error occurs
 ```java
 import com.playlyfe.sdk.Playlyfe;
 import com.playlyfe.sdk.Playlyfe.Callback;
@@ -490,16 +493,14 @@ A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Er
 
 ## Development
 You need to have these tools,
+
 1.`gradle >= 2.2`
+
 2.`jdk >= 7`
 
-To install all dependencies run
-`gradle build`
+To install all dependencies run `gradle build`
 
-**Eclipse IDE**
-
-If you are using eclipse then run this gradle task
-`gradle eclipse`
+If you are using eclipse then run this gradle task `gradle eclipse`
 
 License
 =======
