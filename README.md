@@ -14,7 +14,7 @@ The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.
 To get started create a new playlyfe object using client credentials flow and then start making requests
 **For api v2**
 ```java
-Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
+Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v2");
 HashMap<String, String> player_id = new HashMap<String, String>();
 player_id.put("player_id", "student1");
 // To get infomation of a  player
