@@ -12,41 +12,9 @@ For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe
 # Examples
 The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
 To get started create a new playlyfe object using client credentials flow and then start making requests
-**For api v1**
-```java
-Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
-HashMap<String, String> player_id = new HashMap<String, String>();
-player_id.put("player_id", "student1");
-// To get infomation of a  player
-Map<String, Object> player = (Map<String, Object>)playlyfe.get("/player", player_id);
-System.out.println(student1.get("id"));
-System.out.println(student1.get("alias"));
-
-// To get all available processes
-Object processes = playlyfe.get("/processes", player_id);
-System.out.println(processes);
-// To start a process
-HashMap<String, String> body = new HashMap<String, String>();
-body.put("name", "patched_process");
-process =  playlyfe.post("/definitions/processes/collect",player_id, body);
-
-//To play a process
-HashMap<String, String> body = new HashMap<String, String>();
-body.put("trigger", "collect");
-playlyfe.post("/processes/"+process_id+"/play", player_id, body);
-
-// A PLaylyfeException is thrown when an error from the playlyfe platform is returned on a request
-try {
-  playlyfe.get("/unkown", null);
-}
-catch(PlaylyfeException err) {
-  System.out.println (err.getName()); // route_not_found
-  System.out.println (err.getMessage()); // This route does not exist
-}
-```
 **For api v2**
 ```java
-Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null);
+Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
 HashMap<String, String> player_id = new HashMap<String, String>();
 player_id.put("player_id", "student1");
 // To get infomation of a  player
