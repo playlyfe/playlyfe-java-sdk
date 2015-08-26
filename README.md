@@ -7,8 +7,6 @@ This is the official OAuth 2.0 Java and Android client SDK for the Playlyfe API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
 For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe.com/docs/api.html) for more information.
 
-> Note: Breaking Changes this is the new version of the sdk which uses the Playlyfe api v2 by default if you still want to use the v1 api you can do that so by passing a version key in the options when creating a client with 'v1' as the value
-
 # Examples
 The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
 To get started create a new playlyfe object using client credentials flow and then start making requests
