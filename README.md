@@ -14,20 +14,7 @@ The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.
 To get started create a new playlyfe object using client credentials flow and then start making requests
 **For api v1**
 ```java
-try {
-    Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
-} catch (ClientProtocolException e) {
-    e.printStackTrace();
-} catch (IOException e) {
-    e.printStackTrace();
-} catch (IllegalStateException e) {
-    e.printStackTrace();
-} catch (URISyntaxException e) {
-    e.printStackTrace();
-} catch (PlaylyfeException e) {
-    e.printStackTrace();
-}
-
+Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null, "v1");
 HashMap<String, String> player_id = new HashMap<String, String>();
 player_id.put("player_id", "student1");
 // To get infomation of a  player
@@ -59,20 +46,7 @@ catch(PlaylyfeException err) {
 ```
 **For api v2**
 ```java
-try {
-    Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null);
-} catch (ClientProtocolException e) {
-    e.printStackTrace();
-} catch (IOException e) {
-    e.printStackTrace();
-} catch (IllegalStateException e) {
-    e.printStackTrace();
-} catch (URISyntaxException e) {
-    e.printStackTrace();
-} catch (PlaylyfeException e) {
-    e.printStackTrace();
-}
-
+Playlyfe playlyfe = new Playlyfe("Your client id", "Your client secret", null);
 HashMap<String, String> player_id = new HashMap<String, String>();
 player_id.put("player_id", "student1");
 // To get infomation of a  player
