@@ -9,6 +9,7 @@ import com.playlyfe.sdk.Playlyfe;
 import com.playlyfe.sdk.Playlyfe.Callback;
 import com.playlyfe.sdk.Playlyfe.PersistAccessToken;
 import com.playlyfe.sdk.Playlyfe.PlaylyfeException;
+import com.playlyfe.sdk.PlaylyfeGraphQL;
 
 import java.util.prefs.Preferences;
 
@@ -218,14 +219,89 @@ public class PlaylyfeTest {
    		}
       });
    }
+   
+   public static void testv3() throws IOException, PlaylyfeException {
+	   PlaylyfeGraphQL pl = null;
+	   String token = "";
+	   String query =  "query K {"
+		   		+ " root {"
+		   		+ "    games { "
+		   		+ "      edges { "
+		   		+ "        node {"
+		   		+ "          id"
+		   		+ "          name"
+		   		+ "        }"
+		   		+ "      }"
+		   		+ "    }"
+		   		+ " }}";
+	   pl = new PlaylyfeGraphQL(
+			   "wrong_secret",
+			   "http://localhost:3212/graphql"
+	    );
+	   token = pl.createJWT("wrong_user_id", 3600);
+	   try {
+		   Map<String, Object> games = (Map<String, Object>) pl.graphql(token, query, null);
+		   System.out.println(games);
+	   } catch(PlaylyfeException e) {
+		   System.out.println(e);
+	   }
+	   
+	   pl = new PlaylyfeGraphQL(
+			   "wrong_secret",
+			   "http://localhost:3212/graphql"
+	    );
+	   token = pl.createJWT("db55271e-1e5e-11e6-8369-201a06e4e14a", 3600);
+	   try {
+		   Map<String, Object> games = (Map<String, Object>) pl.graphql(token, query, null);
+		   System.out.println(games);
+	   } catch(PlaylyfeException e) {
+		   System.out.println(e);
+	   }
+	   
+	   pl = new PlaylyfeGraphQL(
+			   "OThjMTE5M2QtZTViYS00YzJjLTg5ZDctNzg3ODg2YzE0Mjcx",
+			   "http://localhost:3212/graphql"
+	    );
+	   token = pl.createJWT("db55271e-1e5e-11e6-8369-201a06e4e14a", 3600);
+	   try {
+		   Map<String, Object> games = (Map<String, Object>) pl.graphql(token, query, null);
+		   System.out.println(games);
+	   } catch(PlaylyfeException e) {
+		   System.out.println(e);
+	   }
+	   
+	   try {
+	   pl = new PlaylyfeGraphQL(
+			   "OThjMTE5M2QtZTViYS00YzJjLTg5ZDctNzg3ODg2YzE0Mjcx",
+			   "http://localhost:3212/graphql"
+	    );
+	   token = pl.createJWT("db55271e-1e5e-11e6-8369-201a06e4e14a", 3600);
+	   Map<String, Object> input =  new HashMap<String, Object>();
+       input.put("input", "{\"id\":\"test\",\"type\":\"Game\"}");
+	   Map<String, Object> games = (Map<String, Object>) pl.graphql(token, ""
+			+ "query Game($input:PLGlobalID!) {"
+	        + "  node(id: $input) {"
+	        + "    ... on Game {"
+	        + "      id "
+	        + "      name "
+	        + "    } "
+	        + "  } "
+	        + " }"
+	   , input);
+	   System.out.println(games);
+	   } catch(PlaylyfeException e) {
+		   System.out.println(e);
+	   }
+   }
 
-    public static void main(String[] args) {
-		testWrongRoute();
-		testv1();
-		testv2();
-		testExpiresAt();
-		testJWT();
-		testAsync();
+    public static void main(String[] args) throws IOException, PlaylyfeException {
+//		testWrongRoute();
+//		testv1();
+//		testv2();
+//		testExpiresAt();
+//		testJWT();
+//		testAsync();
+    	testv3();
 	}
 
 }
