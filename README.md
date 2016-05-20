@@ -468,6 +468,38 @@ To install all dependencies run `gradle build`
 
 If you are using eclipse then run this gradle task `gradle eclipse`
 
+## GraphQL SDK
+
+**For api v2**
+```java
+import com.playlyfe.sdk.Playlyfe.PlaylyfeException;
+import com.playlyfe.sdk.PlaylyfeGraphQL;
+
+PlaylyfeGraphQL pl = new PlaylyfeGraphQL(
+	"your user secret",
+	"http://localhost:3212/graphql"
+);
+String token = pl.createJWT("your user_id", 3600);
+String query =  "query K {"
+ 		+ " root {"
+ 		+ "    games { "
+ 		+ "      edges { "
+ 		+ "        node {"
+ 		+ "          id"
+ 		+ "          name"
+ 		+ "        }"
+ 		+ "      }"
+ 		+ "    }"
+ 		+ " }}";
+try {
+	Map<String, Object> games = (Map<String, Object>) pl.graphql(token, query, null);
+	System.out.println(games);
+} catch(PlaylyfeException e) {
+	System.out.println(e);
+}
+```
+
+
 License
 =======
 Playlyfe Java SDK v1.0.0 
