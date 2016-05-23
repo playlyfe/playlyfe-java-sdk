@@ -455,6 +455,7 @@ Object deleteAsync("" // The api route to delete the component
 ```
 
 **Errors**
+
 A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Error contains a name and message field which can be used to determine the type of error that occurred.
 
 ## Development
