@@ -8,7 +8,7 @@ It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
 For a complete API Reference checkout [Playlyfe Developers](https://dev.playlyfe.com/docs/api.html) for more information.
 
 # Examples
-The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.  
+The Playlyfe class allows you to make rest api calls like GET, POST, .. etc.
 To get started create a new playlyfe object using client credentials flow and then start making requests
 **For api v2**
 ```java
@@ -52,14 +52,14 @@ Android >= 2.3
 ## Install
 if you are using gradle then
 ```java
-compile "com.playlyfe:playlyfe-java-sdk:1.0.0"
+compile "com.playlyfe:playlyfe-java-sdk:1.1.0"
 ```
 or if you prefer to use maven
 ```xml
 <dependency>
     <groupId>com.playlyfe</groupId>
     <artifactId>playlyfe-java-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 or if you just want the jar then copy `playlyfe-java-sdk-all.jar` to your libs folder. It contains the sdk with all dependencies baked in it.
@@ -128,7 +128,7 @@ In the client page select no for the first question and yes for the second
 import com.playlyfe.sdk.Playlyfe;
 
 String[] scopes = {"player.runtime.read", "player.runtime.write"};
-String token = Playlyfe.createJWT("your client_id", "your client_secret", 
+String token = Playlyfe.createJWT("your client_id", "your client_secret",
     "player_id", // The player id associated with your user
     scopes, // The scopes the player has access to
     3600; // 1 hour expiry Time
@@ -454,7 +454,7 @@ Object deleteAsync("" // The api route to delete the component
 )
 ```
 
-**Errors**  
+**Errors**
 A ```PlaylyfeException``` is thrown whenever an error occurs in each call.The Error contains a name and message field which can be used to determine the type of error that occurred.
 
 ## Development
@@ -470,14 +470,14 @@ If you are using eclipse then run this gradle task `gradle eclipse`
 
 ## GraphQL SDK
 
-**For api v2**
+**For api v3**
 ```java
 import com.playlyfe.sdk.Playlyfe.PlaylyfeException;
 import com.playlyfe.sdk.PlaylyfeGraphQL;
 
 PlaylyfeGraphQL pl = new PlaylyfeGraphQL(
-	"your user secret",
-	"http://localhost:3212/graphql"
+	"your user secret", // the secret used to encrypt the token with
+	"http://localhost:3212/graphql" // the graphql api endpoint
 );
 String token = pl.createJWT("your user_id", 3600);
 String query =  "query K {"
@@ -502,8 +502,8 @@ try {
 
 License
 =======
-Playlyfe Java SDK v1.0.0 
-http://dev.playlyfe.com/  
+Playlyfe Java SDK
+http://dev.playlyfe.com/
 Copyright(c) 2014-2015, Playlyfe IT Solutions Pvt. Ltd, support@playlyfe.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -523,3 +523,30 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+Contributing
+============
+1. Run `gradle build` to pull in dependencies
+2. Run `gradle eclipse` to make the eclipse project
+3. Create PGP Key using `gpg --gen-key`.
+4. Find the keyId using `gpg --list-keys`.
+5. Upload the key to a public key server using this `gpg --armor --export keyID`. http://pgp.mit.edu/
+6. If you are using gpg2 then you need to export your key `gpg --export-secret-key keyId > secring.gpg`
+7. Change this to the gradle build file with your own key
+    ```gradle
+    allprojects { ext."signing.keyId" = '1AD528DD' }
+    allprojects { ext."signing.secretKeyRingFile" = '/path/to/secring.gpg' }
+    allprojects { ext."signing.password" = 'keypass' }
+    ```
+8. Change this under repository(url)
+  ```gradle
+  authentication(userName: 'myusername', password: 'yoursupersecretpassword')
+  ```
+9. Run `gradle uploadArchives`
+10. Go to https://oss.sonatype.org/ Staging Repository and find com.playlyfe Click Close and then Release
+
+References:
+
+http://central.sonatype.org/pages/releasing-the-deployment.html
+
+http://www.feedhenry.com/publishing-jar-maven-central-repository/

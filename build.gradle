@@ -37,9 +37,9 @@ signing {
   sign configurations.archives
 }
 
-allprojects { ext."signing.keyId" = 'my_key' }
-allprojects { ext."signing.secretKeyRingFile" = '/home/username/.gnupg/secring.gpg' }
-allprojects { ext."signing.password" = 'password' }
+allprojects { ext."signing.keyId" = '77890410' }
+allprojects { ext."signing.secretKeyRingFile" = '/home/pyros2097/Code/src/playlyfe.com/playlyfe-java-sdk/secring.gpg' }
+allprojects { ext."signing.password" = 'tester' }
 
 
 mavenPomDir = "build/libs"
@@ -48,9 +48,9 @@ uploadArchives {
   repositories {
     mavenDeployer {
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: 'username', password: 'password')
+        authentication(userName: 'playlyfe', password: 'playlyfe@playlyfe')
       }
-      pom.version = '1.0.0'
+      pom.version = '1.1.0'
       pom.groupId = 'com.playlyfe'
       pom.artifactId = 'playlyfe-java-sdk'
       pom.project {
